@@ -41,7 +41,7 @@ class Config(object):
         '''
         Write contents to disk
         '''
-        logging.info('Trying to write')
+        #logging.info('Trying to write')
         with open(self.filename, 'w') as fh:
             fh.write(self.contents)
 
@@ -97,7 +97,7 @@ class RecordsConfig(Config, dict):
         self._load_line(line)
 
     def write(self):
-        logging.info('Trying to write records config')
+        #logging.info('Trying to write records config')
         with open(self.filename, 'w') as fh:
             for top_kind, config_map in self.iteritems():
                 for name, val in config_map.iteritems():
