@@ -397,8 +397,7 @@ class Environment(object):
                           ]
 
         log.info('Overwriting some configs')
-        '''
-try:
+        try:
             # overwrite a few things that need to be changed to have a unique env
             records = tsqa.configs.RecordsConfig(os.path.join(self.layout.sysconfdir, 'records.config'))
             records['CONFIG'].update({
@@ -432,7 +431,7 @@ try:
             records.write()
         except Exception as e:
             logging.info('Exception caught: {0}!'.format(e))
-'''
+
         os.chmod(os.path.join(os.path.dirname(self.layout.runtimedir)), 0777)
         os.chmod(os.path.join(self.layout.runtimedir), 0777)
 
