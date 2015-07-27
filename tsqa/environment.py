@@ -195,11 +195,13 @@ class EnvironmentFactory(object):
                 raise
 
         # create a layout
+        logging.info('Creating a layout')
         layout = Layout(self.environment_stash[key]['path'])
 
         # return an environment cloned from that layout
         ret = Environment()
         ret.clone(layout=layout)
+        logging.info('Environment returned. ret={0}'.format(ret))
         return ret
 
 
