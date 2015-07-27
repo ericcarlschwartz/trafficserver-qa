@@ -16,6 +16,9 @@
 
 
 # TODO: keep track of stat when it was loaded? So we don't clobber manual file changes...
+import logging
+
+log = logging.getLogger(__name__)
 
 class Config(object):
     '''
