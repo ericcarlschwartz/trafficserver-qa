@@ -38,6 +38,7 @@ class Config(object):
         '''
         Write contents to disk
         '''
+        logging.info('Trying to write')
         with open(self.filename, 'w') as fh:
             fh.write(self.contents)
 
