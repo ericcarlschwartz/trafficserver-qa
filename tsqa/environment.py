@@ -397,37 +397,40 @@ class Environment(object):
                           ]
 
         log.info('Overwriting some configs')
-        # overwrite a few things that need to be changed to have a unique env
-        records = tsqa.configs.RecordsConfig(os.path.join(self.layout.sysconfdir, 'records.config'))
-        records['CONFIG'].update({
-            'proxy.config.config_dir': self.layout.sysconfdir,
-            'proxy.config.body_factory.template_sets_dir': os.path.join(self.layout.sysconfdir, 'body_factory'),
-            'proxy.config.plugin.plugin_dir': self.layout.plugindir,
-            'proxy.config.bin_path': self.layout.bindir,
-            'proxy.config.log.logfile_dir': self.layout.logdir,
-            'proxy.config.local_state_dir': self.layout.runtimedir,
-            'proxy.config.http.server_ports': str(http_server_port),  # your own listen port
-            'proxy.config.process_manager.mgmt_port': manager_mgmt_port,  # your own listen port
-            'proxy.config.admin.synthetic_port': admin_port,
-            'proxy.config.admin.user_id': '#-1',
+        try:
+            # overwrite a few things that need to be changed to have a unique env
+            records = tsqa.configs.RecordsConfig(os.path.join(self.layout.sysconfdir, 'records.config'))
+            records['CONFIG'].update({
+                'proxy.config.config_dir': self.layout.sysconfdir,
+                'proxy.config.body_factory.template_sets_dir': os.path.join(self.layout.sysconfdir, 'body_factory'),
+                'proxy.config.plugin.plugin_dir': self.layout.plugindir,
+                'proxy.config.bin_path': self.layout.bindir,
+                'proxy.config.log.logfile_dir': self.layout.logdir,
+                'proxy.config.local_state_dir': self.layout.runtimedir,
+                'proxy.config.http.server_ports': str(http_server_port),  # your own listen port
+                'proxy.config.process_manager.mgmt_port': manager_mgmt_port,  # your own listen port
+                'proxy.config.admin.synthetic_port': admin_port,
+                'proxy.config.admin.user_id': '#-1',
 
-            # a bunch of debug options
-            'proxy.config.diags.show_location': 1,
-            'proxy.config.diags.output.diag': 'OL',
-            'proxy.config.diags.output.debug': 'OL',
-            'proxy.config.diags.output.status': 'OL',
-            'proxy.config.diags.output.note': 'OL',
-            'proxy.config.diags.output.warning': 'OL',
-            'proxy.config.diags.output.error': 'OL',
-            'proxy.config.diags.output.fatal': 'OL',
-            'proxy.config.diags.output.alert': 'OL',
-            'proxy.config.diags.output.emergency': 'OL',
+                # a bunch of debug options
+                'proxy.config.diags.show_location': 1,
+                'proxy.config.diags.output.diag': 'OL',
+                'proxy.config.diags.output.debug': 'OL',
+                'proxy.config.diags.output.status': 'OL',
+                'proxy.config.diags.output.note': 'OL',
+                'proxy.config.diags.output.warning': 'OL',
+                'proxy.config.diags.output.error': 'OL',
+                'proxy.config.diags.output.fatal': 'OL',
+                'proxy.config.diags.output.alert': 'OL',
+                'proxy.config.diags.output.emergency': 'OL',
 
-            # set the process_server timeouts to 0 (faster startup)
-            'proxy.config.lm.pserver_timeout_secs': 0,
-            'proxy.config.lm.pserver_timeout_msecs': 0,
-        })
-        records.write()
+                # set the process_server timeouts to 0 (faster startup)
+                'proxy.config.lm.pserver_timeout_secs': 0,
+                'proxy.config.lm.pserver_timeout_msecs': 0,
+            })
+            records.write()
+        except Exception as e:
+            logging.info('Exception caught: {0}!'.format(e))
 
         os.chmod(os.path.join(os.path.dirname(self.layout.runtimedir)), 0777)
         os.chmod(os.path.join(self.layout.runtimedir), 0777)
