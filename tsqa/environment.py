@@ -339,14 +339,18 @@ class Environment(object):
         Clone the given layout to this environment's prefix
         """
         # First, make the prefix directory.
+        log.info('Making prefix directory')
         if self.layout is None:
             self.layout = Layout(tempfile.mkdtemp(prefix=os.environ.get('TSQA_LAYOUT_PREFIX', 'tsqa.env.'),
                                                   dir=os.environ.get('TSQA_LAYOUR_DIR', None)))
         else:
             os.makedirs(self.layout.prefix)
+        
+        log.info('Making tmp readable by all')
         os.chmod(self.layout.prefix, 0777)  # Make the tmp dir readable by all
 
         # copy all files from old layout to new one
+        log.info('Copying all files from old layout to new one')
         for item in os.listdir(layout.prefix):
             src_path = os.path.join(layout.prefix, item)
             dst_path = os.path.join(self.layout.prefix, item)
@@ -373,6 +377,7 @@ class Environment(object):
                 shutil.copyfile(src_path, dst_path)
 
         # make sure that all suffixes in new layout exist
+        log.info('Making sure that all suffixes in new layout exist')
         for name in self.layout.suffixes:
             dirname = getattr(self.layout, name)
             if not os.path.exists(dirname):
@@ -380,6 +385,7 @@ class Environment(object):
             else:
                 os.chmod(dirname, 0777)
 
+        log.info('Getting ports')
         http_server_port = tsqa.utils.bind_unused_port()[1]
         manager_mgmt_port = tsqa.utils.bind_unused_port()[1]
         admin_port = tsqa.utils.bind_unused_port()[1]
@@ -389,6 +395,7 @@ class Environment(object):
                           ('127.0.0.1', admin_port),
                           ]
 
+        log.info('Overwriting some configs')
         # overwrite a few things that need to be changed to have a unique env
         records = tsqa.configs.RecordsConfig(os.path.join(self.layout.sysconfdir, 'records.config'))
         records['CONFIG'].update({
@@ -425,6 +432,7 @@ class Environment(object):
         os.chmod(os.path.join(self.layout.runtimedir), 0777)
 
         # write out a convenience script to
+        log.info('Writing out convenience script')
         with open(os.path.join(self.layout.prefix, 'run'), 'w') as runscript:
             runscript.write('#! /usr/bin/env sh\n\n')
             runscript.write('# run PROGRAM [ARGS ...]\n')
