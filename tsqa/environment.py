@@ -149,6 +149,7 @@ class EnvironmentFactory(object):
             if key in EnvironmentFactory.negative_cache:
                 raise EnvironmentFactory.negative_cache[key]
             try:
+                log.info('Running autoreconf')
                 self.autoreconf()
                 builddir = tempfile.mkdtemp()
 
@@ -167,14 +168,17 @@ class EnvironmentFactory(object):
                 log.info('Starting build ({0}): configure {1}'.format(key, configure))
 
                 # configure
+                log.info('Configuring')
                 args = [os.path.join(self.source_dir, 'configure'), '--prefix=/'] + tsqa.utils.configure_list(configure)
                 tsqa.utils.run_sync_command(args, **kwargs)
 
                 # make
+                log.info('Running make')
                 tsqa.utils.run_sync_command(['make', '-j{0}'.format(multiprocessing.cpu_count())], **kwargs)
                 installdir = tempfile.mkdtemp(dir=self.env_cache_dir)
 
                 # make install
+                log.info('Installing')
                 tsqa.utils.run_sync_command(['make', 'install', 'DESTDIR={0}'.format(installdir)], **kwargs)
 
                 shutil.rmtree(builddir)  # delete builddir, not useful after install
@@ -186,6 +190,7 @@ class EnvironmentFactory(object):
                 }
                 log.info('Build completed ({0}): configure {1}'.format(key, configure))
             except Exception as e:
+                log.info('Caught exception: {0}!'.format(e))
                 EnvironmentFactory.negative_cache[key] = e
                 raise
 
