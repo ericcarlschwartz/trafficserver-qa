@@ -83,6 +83,7 @@ class EnvironmentCase(unittest.TestCase):
             cfg.write()
 
         # start ATS
+        logging.info("Starting ATS")
         cls.environment.start()
 
         # we assume the tests passed

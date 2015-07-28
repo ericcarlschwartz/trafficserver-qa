@@ -294,6 +294,7 @@ class Environment(object):
         cmd = [path, '--debug', '--stdout']
 
         with open(os.path.join(self.layout.logdir, 'cop.log'), 'w+') as logfile:
+            log.info("Starting traffic cop")
             self.cop = subprocess.Popen(cmd,
                                         env=self.shell_env,
                                         stdout=logfile,
@@ -306,7 +307,7 @@ class Environment(object):
             except:
                 self.stop()  # make sure to stop the daemons
                 raise
-            log.debug('traffic_cop took {0}s to start up'.format(time.time() - start))
+            log.info('traffic_cop took {0}s to start up'.format(time.time() - start))
 
             self.cop.poll()
             if self.cop.returncode is not None:
@@ -461,10 +462,10 @@ class Environment(object):
     def start(self):
         if self.running():  # if its already running, don't start another one
             raise Exception('traffic cop already started')
-        log.debug("Starting traffic cop")
+        log.info("Starting traffic cop")
         assert(os.path.isfile(os.path.join(self.layout.sysconfdir, 'records.config')))
         self.__exec_cop()
-        log.debug("Started traffic cop: %s", self.cop)
+        log.info("Started traffic cop: %s", self.cop)
 
     # TODO: exception if already stopped?
     def stop(self):
