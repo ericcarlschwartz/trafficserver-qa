@@ -411,7 +411,7 @@ class Environment(object):
                 'proxy.config.http.server_ports': str(http_server_port),  # your own listen port
                 'proxy.config.process_manager.mgmt_port': manager_mgmt_port,  # your own listen port
                 'proxy.config.admin.synthetic_port': admin_port,
-                'proxy.config.admin.user_id': '#86593',
+                'proxy.config.admin.user_id': '#-1',
 
                 # a bunch of debug options
                 'proxy.config.diags.show_location': 1,
