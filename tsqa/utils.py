@@ -49,7 +49,7 @@ def poll_interfaces(hostports, **kwargs):
             hostname = hostport[0]
             port = hostport[1]
 
-            log.debug("Checking interface '%s:%d'", hostname, port)
+            log.info("Checking interface '%s:%d'", hostname, port)
 
             # This supports IPv6
             try:
@@ -59,7 +59,7 @@ def poll_interfaces(hostports, **kwargs):
                 s.close()
                 hostports.remove(hostport)
 
-                log.debug("Interface '%s:%d' is up", hostname, port)
+                log.info("Interface '%s:%d' is up", hostname, port)
             except:
                 pass
 
@@ -72,7 +72,7 @@ def poll_interfaces(hostports, **kwargs):
         raise Exception("Timeout waiting for interfaces: {0}".format(
                         reduce(lambda x, y: str(x) + ',' + str(y), hostports)))
 
-    log.debug("All interfaces are up")
+    log.info("All interfaces are up")
 
 # TODO: test
 def import_unittest():
