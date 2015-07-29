@@ -387,10 +387,10 @@ class Environment(object):
             else:
                 os.chmod(dirname, 0777)
 
-        log.info('Getting ports')
         http_server_port = tsqa.utils.bind_unused_port()[1]
         manager_mgmt_port = tsqa.utils.bind_unused_port()[1]
         admin_port = tsqa.utils.bind_unused_port()[1]
+        log.info('Got ports. server={0} manager={1} admin={2}'.format(http_server_port, manager_mgmt_port, admin_port)
 
         self.hostports = [('127.0.0.1', http_server_port),
                           ('127.0.0.1', manager_mgmt_port),
