@@ -410,8 +410,9 @@ class Environment(object):
                 'proxy.config.local_state_dir': self.layout.runtimedir,
                 'proxy.config.http.server_ports': str(http_server_port),  # your own listen port
                 'proxy.config.process_manager.mgmt_port': manager_mgmt_port,  # your own listen port
-                'proxy.config.admin.synthetic_port': admin_port,
+                'proxy.config.admin.autoconf_port': admin_port,
                 'proxy.config.admin.user_id': '#-1',
+                'proxy.config.admin.api.restricted': 0,
 
                 # a bunch of debug options
                 'proxy.config.diags.show_location': 1,
